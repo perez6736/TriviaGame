@@ -1,0 +1,29 @@
+@font-face {
+    font-family: collegefont;
+    src: url(../fonts/collegefont.ttf);
+}
+
+body{
+
+}
+
+#header{
+	font-family: collegefont;
+	font-size: 56px;
+}
+
+.title{
+	margin: 25px;
+}
+.counter-container, .question, .answer{
+	border-style: solid;
+	margin: 25px;
+	margin-left: 275px;
+	width: 50%;
+	height: 50px;
+	padding-top: 8px;
+}
+
+.answer:hover{
+	background-color: yellow;
+}
