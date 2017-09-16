@@ -1,32 +1,72 @@
 // make the variables for the ids 
 var counterHTML = $("#counter");
 var questionHTML = $("#question1");
-var answer1HTML = $("#answer1");
-var answer2HTML = $("#answer2");
-var answer3HTML = $("#answer3");
-var answer4HTML = $("#answer4");
+var answer1HTML = $("#answer0");
+var answer2HTML = $("#answer1");
+var answer3HTML = $("#answer2");
+var answer4HTML = $("#answer3");
+
 
 //questions object 
-
 var questions ={
 	qAndA:[
 		{
 			question: "What day is it?", 
-			correctAnswer: "monday"
+			correctAnswer: "monday",
+			wrongAnswers: [
+				"tuesday", "sunday", "friday"
+			]
 		},
 		{
 			question: "What is your favorite color?",
-			correctAnswer: "blue"
+			correctAnswer: "blue",
+			wrongAnswers: [
+				"green", "red", "pink"
+			]
 		},
 		{
 			question: "what color is the sky?",
-			correctAnswer: "blue"
+			correctAnswer: "skyblue",
+			wrongAnswers: [
+				"skygreen", "skyred", "skypink"
+			]
 		},
 		{
 			question: "how many legs do you have?",
-			correctAnswer: "2"
+			correctAnswer: "2",
+			wrongAnswers: [
+				"3", "1", "5"
+			]
+
 		}
-		]
+		],
+
+		displayQuestionAndAnswers: function(){
+			var randomQuestionIndex = Math.floor(Math.random() * this.qAndA.length); //gets a random number 0-length of qAndA's
+			var randomQuestion = this.qAndA[randomQuestionIndex].question; //this is the random question 
+			var theCorrectAnswer = this.qAndA[randomQuestionIndex].correctAnswer; // this is the correct answer for the question
+			//chance.js for the win! we are changing the order of the wrong answers in the array so they dont show up in the same div
+			var randomizedWrongAnswers = chance.shuffle(this.qAndA[randomQuestionIndex].wrongAnswers);
+			var randomArr = []; // create an empty arr
+			var theWrongAnswers;
+
+			for (i=0; i<randomizedWrongAnswers.length + 1; i++){
+				randomArr.push(i); 
+			}
+
+			randomArr = chance.shuffle(randomArr);
+
+			for (i=0; i<randomizedWrongAnswers.length; i++){
+				theWrongAnswers = randomizedWrongAnswers[i]; // the wrong answer is an index of the scrambled wrong answer array 
+
+				$("#answer"+randomArr[i]).html(theWrongAnswers);
+				
+			}
+			$("#answer"+randomArr[randomArr.length-1]).html(theCorrectAnswer);
+			questionHTML.html(randomQuestion);
+
+		},
+
 };
 
 // lets make a countdown timer
@@ -51,5 +91,4 @@ function CountingDown(){
 //start the counter 
 startCounter();
 
-
-
+questions.displayQuestionAndAnswers();
