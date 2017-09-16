@@ -15,20 +15,13 @@ body{
 .title{
 	margin: 25px;
 }
-.title, .counter-container, .question, .answer{
+.counter-container, .question, .answer{
 	border-style: solid;
 	margin: 25px;
 	margin-left: 275px;
 	width: 50%;
-<<<<<<< HEAD
-	height: auto;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	
-=======
 	height: 75px;
 	padding-top: 22px;
->>>>>>> 410ba0cf74a5c87816e5d64ad76ba9cbc2e0d372
 }
 
 .answer:hover{

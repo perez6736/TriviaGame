@@ -1,0 +1,13 @@
+ajax testing 
+
+
+var url = "http://jservice.io/api/clues?category=42&offset=" + Math.floor(Math.random() * 10);
+
+$(function(){
+	$.get({
+		url: url
+	}).done(function(results){
+		console.log(results);
+	});
+});
+
