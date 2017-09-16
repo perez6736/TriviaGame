@@ -6,6 +6,8 @@ var answer2HTML = $("#answer1");
 var answer3HTML = $("#answer2");
 var answer4HTML = $("#answer3");
 
+var correctGuess = 0;
+var incorrectGuess = 0; 
 
 //questions object 
 var questions ={
@@ -41,6 +43,7 @@ var questions ={
 		}
 		],
 
+		//TODO -- make it so it displays each question once in a random order
 		displayQuestionAndAnswers: function(){
 			var randomQuestionIndex = Math.floor(Math.random() * this.qAndA.length); //gets a random number 0-length of qAndA's
 			var randomQuestion = this.qAndA[randomQuestionIndex].question; //this is the random question 
@@ -49,6 +52,7 @@ var questions ={
 			var randomizedWrongAnswers = chance.shuffle(this.qAndA[randomQuestionIndex].wrongAnswers);
 			var randomArr = []; // create an empty arr
 			var theWrongAnswers;
+
 
 			for (i=0; i<randomizedWrongAnswers.length + 1; i++){
 				randomArr.push(i); 
@@ -59,11 +63,11 @@ var questions ={
 			for (i=0; i<randomizedWrongAnswers.length; i++){
 				theWrongAnswers = randomizedWrongAnswers[i]; // the wrong answer is an index of the scrambled wrong answer array 
 
-				$("#answer"+randomArr[i]).html(theWrongAnswers);
+				$("#answer"+randomArr[i]).html(theWrongAnswers); // display the wrong answers to the html on a random div. 
 				
 			}
-			$("#answer"+randomArr[randomArr.length-1]).html(theCorrectAnswer);
-			questionHTML.html(randomQuestion);
+			$("#answer"+randomArr[randomArr.length-1]).html(theCorrectAnswer); //displays the correct answer on the left over div 
+			questionHTML.html(randomQuestion); //display the question 
 
 		},
 
