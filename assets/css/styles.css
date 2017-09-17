@@ -15,7 +15,7 @@ body{
 .title{
 	margin: 25px;
 }
-.title, .counter-container, .question, .answer{
+.title, .counter-container, .question, .answer, .start-button{
 	border-style: solid;
 	margin: 25px;
 	margin-left: 275px;
@@ -25,6 +25,6 @@ body{
 	padding-bottom: 5px;
 }
 
-.answer:hover{
+.answer:hover, .start-button:hover{
 	background-color: yellow;
 }

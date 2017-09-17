@@ -1,13 +1,19 @@
-// make the variables for the ids 
+// make the variables for the HTML stuff
 var counterHTML = $("#counter");
 var questionHTML = $("#question1");
 var answer1HTML = $("#answer0");
 var answer2HTML = $("#answer1");
 var answer3HTML = $("#answer2");
 var answer4HTML = $("#answer3");
+var startHTML = $("#start");
+var answersClassHTML = $(".answer");
+var questionClassHTML = $(".question");
+var counterClassHTML = $(".counter-container");
 
 var correctGuess = 0;
 var incorrectGuess = 0; 
+var questionOrder = [];
+var currentQuestion = 0;
 
 //questions object 
 var questions ={
@@ -44,37 +50,44 @@ var questions ={
 		],
 
 		//TODO -- make it so it displays each question once in a random order
-		displayQuestionAndAnswers: function(){
-			var randomQuestionIndex = Math.floor(Math.random() * this.qAndA.length); //gets a random number 0-length of qAndA's
-			var randomQuestion = this.qAndA[randomQuestionIndex].question; //this is the random question 
-			var theCorrectAnswer = this.qAndA[randomQuestionIndex].correctAnswer; // this is the correct answer for the question
-			//chance.js for the win! we are changing the order of the wrong answers in the array so they dont show up in the same div
-			var randomizedWrongAnswers = chance.shuffle(this.qAndA[randomQuestionIndex].wrongAnswers);
-			var randomArr = []; // create an empty arr
-			var theWrongAnswers;
-
-
-			for (i=0; i<randomizedWrongAnswers.length + 1; i++){
-				randomArr.push(i); 
+		displayQuestionAndAnswers: function(QuestionIndex){
+			if(QuestionIndex === questions.qAndA.length){
+				console.log("done");
 			}
+			else{
+				var randomQuestion = this.qAndA[QuestionIndex].question; //this is the random question 
+				var theCorrectAnswer = this.qAndA[QuestionIndex].correctAnswer; // this is the correct answer for the question
+				var WrongAnswers = this.qAndA[QuestionIndex].wrongAnswers;
+				var randomDivForAnswersArr = []; // create an empty arr
+				var theWrongAnswer; // variable to hold a single wrong answer. 
 
-			randomArr = chance.shuffle(randomArr);
+				makeRandomArray(WrongAnswers.length+1, randomDivForAnswersArr); // need to add one to make room for the correct answer too.
+				randomDivForAnswersArr = chance.shuffle(randomDivForAnswersArr); //shuffle that array up 
 
-			for (i=0; i<randomizedWrongAnswers.length; i++){
-				theWrongAnswers = randomizedWrongAnswers[i]; // the wrong answer is an index of the scrambled wrong answer array 
+				for (i=0; i<WrongAnswers.length; i++){
+					theWrongAnswer = WrongAnswers[i]; // the wrong answer is an index of the scrambled wrong answer array 
 
-				$("#answer"+randomArr[i]).html(theWrongAnswers); // display the wrong answers to the html on a random div. 
-				
-			}
-			$("#answer"+randomArr[randomArr.length-1]).html(theCorrectAnswer); //displays the correct answer on the left over div 
-			questionHTML.html(randomQuestion); //display the question 
-
+					$("#answer"+randomDivForAnswersArr[i]).html(theWrongAnswer); // display the wrong answers to the html on a random div. 
+					$("#answer"+randomDivForAnswersArr[i]).attr("value", "wrong");
+				}
+				$("#answer"+randomDivForAnswersArr[randomDivForAnswersArr.length-1]).html(theCorrectAnswer); //displays the correct answer on the left over div 
+				$("#answer"+randomDivForAnswersArr[randomDivForAnswersArr.length-1]).attr("value", "correct");
+				questionHTML.html(randomQuestion); //display the question 
+				}
 		},
-
 };
 
+
+//function takes an array length and an array and puts 0-length of array in a new array. 
+function makeRandomArray(arrayLength, randomArray){ 
+	for (i=0; i<arrayLength; i++){
+		randomArray.push(i); 
+	}
+}
+
+
 // lets make a countdown timer
-var count = 2; // set the counter 
+var count = 5; // set the counter 
 var startCounter; // call this to start the counter
 var _theCounter;
 counterHTML.html(count); 
@@ -92,7 +105,44 @@ function CountingDown(){
 
 }
 
-//start the counter 
-startCounter();
+function startGame(){
+	//detach start button
+	$(".start-button").detach();
+	//show the counter, question and answers 
+	$(".answer").show();
+	$(".question").show();
+	$(".counter-container").show();
 
-questions.displayQuestionAndAnswers();
+	// start the counter
+	startCounter();
+
+	//make the questions come up in a random order each game. 
+	makeRandomArray(questions.qAndA.length, questionOrder);
+	questionOrder = chance.shuffle(questionOrder);
+
+	console.log(questionOrder);
+	questions.displayQuestionAndAnswers(currentQuestion); // display the first question. 
+}
+
+//hide all divs initially 
+answersClassHTML.hide();
+questionClassHTML.hide();
+counterClassHTML.hide();
+
+//when you click start - we must detach the start button and attach the questions counter and answers 
+startHTML.on("click", startGame);
+
+answersClassHTML.on("click", function(e){
+	var answerResult = $(this).children("div").attr("value"); // result of the answer he clicked 
+	if(answerResult === "correct"){
+		correctGuess++; 
+		currentQuestion++;
+		if(currentQuestion > questions.qAndA.length){ //if they reach the end of all questions we shouldn't display more questions 
+			console.log("no more questions!");
+		}
+		else{
+			questions.displayQuestionAndAnswers(currentQuestion);
+		}
+		
+	}
+})
