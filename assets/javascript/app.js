@@ -97,7 +97,9 @@ startCounter = function(){_theCounter = setInterval(CountingDown, 1000)};
 function CountingDown(){
 	count--;
 	counterHTML.html(count);
-	if(count === 0){
+	if(count <= 0){
+		count = 0;
+		counterHTML.html(count); 
 		clearInterval(_theCounter);
 	}
 
@@ -167,6 +169,7 @@ startAgainHTML.on("click", function(){ // if the user wants to play again we mus
 	questionOrder = [];
 	currentQuestion = 0;
 	resetCounter();
+	hideScore();
 	startGame();
 });
 
