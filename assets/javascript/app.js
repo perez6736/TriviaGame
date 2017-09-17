@@ -90,6 +90,7 @@ var startCounter; // call this to start the counter
 var _theCounter;
 counterHTML.html(count); 
 var gameHasStarted = false;
+var isScoreShowing = false;
 
 // make the count go down by 1 every second
 startCounter = function(){_theCounter = setInterval(CountingDown, 1000)}; 
@@ -101,9 +102,10 @@ function CountingDown(){
 	if(count <= 0){
 		count = 0;
 		counterHTML.html(count); 
-		incorrectGuess++; //if counts hits zero you get a wrong answer 
+		if(!isScoreShowing){ //when ever the score isnt showing is when we will give incorrect answers
+			incorrectGuess++; //if counts hits zero you get a wrong answer 
+		} 
 		currentQuestion++; //go to the next question 
-		setTimeout
 		questions.displayQuestionAndAnswers(currentQuestion); // show the next question 
 		resetCounter(); //reset the count and start it again. 
 	}
@@ -149,6 +151,7 @@ function showScore(){
 	scoreContainerHTML.show();	
 	scoreCorrectHTML.html("Correct answers: " + correctGuess);
 	scoreIncorrectHTML.html("Incorrect answers: " + incorrectGuess);
+	isScoreShowing = true;
 
 }
 
