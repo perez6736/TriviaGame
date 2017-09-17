@@ -56,7 +56,7 @@ var questions ={
 
 		// made this function in order to call and randomize the question order and where the answer show up. 
 		displayQuestionAndAnswers: function(QuestionIndex){
-			if(QuestionIndex === questions.qAndA.length){
+			if(QuestionIndex >= questions.qAndA.length){
 				hideAnswersQuestionsCounters();
 				showScore();
 			}
@@ -83,12 +83,13 @@ var questions ={
 		},
 };
 
-
+//-------------------------------------------------
 // lets make a countdown timer
 var count = 5; // set the counter 
 var startCounter; // call this to start the counter
 var _theCounter;
 counterHTML.html(count); 
+var gameHasStarted = false;
 
 // make the count go down by 1 every second
 startCounter = function(){_theCounter = setInterval(CountingDown, 1000)}; 
@@ -100,10 +101,14 @@ function CountingDown(){
 	if(count <= 0){
 		count = 0;
 		counterHTML.html(count); 
-		clearInterval(_theCounter);
+		incorrectGuess++; //if counts hits zero you get a wrong answer 
+		currentQuestion++; //go to the next question 
+		setTimeout
+		questions.displayQuestionAndAnswers(currentQuestion); // show the next question 
+		resetCounter(); //reset the count and start it again. 
 	}
-
 }
+//--------------------------------------------------------
 
 function startGame(){
 	//detach start button
@@ -114,7 +119,11 @@ function startGame(){
 	$(".counter-container").show();
 
 	// start the counter
-	startCounter();
+	if(!gameHasStarted){ //need to check if the player has started a game before
+		startCounter();
+		gameHasStarted = true;
+	}
+	
 
 	//make the questions come up in a random order each game. 
 	makeRandomArray(questions.qAndA.length, questionOrder);
@@ -152,6 +161,7 @@ function makeRandomArray(arrayLength, randomArray){
 
 function resetCounter(){
 	count = 5;
+	counterHTML.html(count);
 }
 
 
@@ -190,5 +200,3 @@ answersClassHTML.on("click", function(e){
 		resetCounter();
 	}
 })
-
-//make it so when the count hits zero you get plus 1 on the incorrect answers and it goes to the next question. 
