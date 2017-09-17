@@ -6,6 +6,11 @@ var answer2HTML = $("#answer1");
 var answer3HTML = $("#answer2");
 var answer4HTML = $("#answer3");
 var startHTML = $("#start");
+var scoreCorrectHTML = $("#score-correct");
+var scoreIncorrectHTML = $("#score-incorrect");
+var startAgainHTML = $("#start-again");
+var startAgainContainerHTML = $(".startAgain-container");
+var scoreContainerHTML = $(".score-container");
 var answersClassHTML = $(".answer");
 var questionClassHTML = $(".question");
 var counterClassHTML = $(".counter-container");
@@ -49,10 +54,11 @@ var questions ={
 		}
 		],
 
-		//TODO -- make it so it displays each question once in a random order
+		// made this function in order to call and randomize the question order and where the answer show up. 
 		displayQuestionAndAnswers: function(QuestionIndex){
 			if(QuestionIndex === questions.qAndA.length){
-				console.log("done");
+				hideAnswersQuestionsCounters();
+				showScore();
 			}
 			else{
 				var randomQuestion = this.qAndA[QuestionIndex].question; //this is the random question 
@@ -76,14 +82,6 @@ var questions ={
 				}
 		},
 };
-
-
-//function takes an array length and an array and puts 0-length of array in a new array. 
-function makeRandomArray(arrayLength, randomArray){ 
-	for (i=0; i<arrayLength; i++){
-		randomArray.push(i); 
-	}
-}
 
 
 // lets make a countdown timer
@@ -119,30 +117,75 @@ function startGame(){
 	//make the questions come up in a random order each game. 
 	makeRandomArray(questions.qAndA.length, questionOrder);
 	questionOrder = chance.shuffle(questionOrder);
-
-	console.log(questionOrder);
 	questions.displayQuestionAndAnswers(currentQuestion); // display the first question. 
 }
 
 //hide all divs initially 
-answersClassHTML.hide();
-questionClassHTML.hide();
-counterClassHTML.hide();
+function hideAnswersQuestionsCounters(){
+	answersClassHTML.hide();
+	questionClassHTML.hide();
+	counterClassHTML.hide();
+}
 
-//when you click start - we must detach the start button and attach the questions counter and answers 
+function hideScore(){
+	startAgainContainerHTML.hide();
+	scoreContainerHTML.hide();
+
+}
+
+function showScore(){
+	startAgainContainerHTML.show();
+	scoreContainerHTML.show();	
+	scoreCorrectHTML.html("Correct answers: " + correctGuess);
+	scoreIncorrectHTML.html("Incorrect answers: " + incorrectGuess);
+
+}
+
+//function takes an array length and an array and puts 0-length of array in a new array. 
+function makeRandomArray(arrayLength, randomArray){ 
+	for (i=0; i<arrayLength; i++){
+		randomArray.push(i); 
+	}
+}
+
+function resetCounter(){
+	count = 5;
+}
+
+
+
+// Game starts here ------------------------------------------------------------------------------
+
+hideAnswersQuestionsCounters();
+hideScore();
+// clicking starts runs the startGame function
 startHTML.on("click", startGame);
 
+startAgainHTML.on("click", function(){ // if the user wants to play again we must reset stats from previous iteration 
+	correctGuess = 0;
+	incorrectGuess = 0; 
+	questionOrder = [];
+	currentQuestion = 0;
+	resetCounter();
+	startGame();
+});
+
+//clicking on an answer 
 answersClassHTML.on("click", function(e){
 	var answerResult = $(this).children("div").attr("value"); // result of the answer he clicked 
-	if(answerResult === "correct"){
-		correctGuess++; 
+	if(answerResult === "correct"){ //if user clicked correct answer
+		correctGuess++; //add to score
+		currentQuestion++; //set the variable so it can be passed in displayQuestionAndAnswers
+		questions.displayQuestionAndAnswers(currentQuestion);
+		resetCounter(); // reset counter 
+	
+	}
+	else{
+		incorrectGuess++; //add to score
 		currentQuestion++;
-		if(currentQuestion > questions.qAndA.length){ //if they reach the end of all questions we shouldn't display more questions 
-			console.log("no more questions!");
-		}
-		else{
-			questions.displayQuestionAndAnswers(currentQuestion);
-		}
-		
+		questions.displayQuestionAndAnswers(currentQuestion);
+		resetCounter();
 	}
 })
+
+//make it so when the count hits zero you get plus 1 on the incorrect answers and it goes to the next question. 
