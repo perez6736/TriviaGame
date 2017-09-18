@@ -4,7 +4,14 @@
 }
 
 body{
-	
+	background-image: url(../images/sports.jpg);
+	background-repeat:no-repeat;
+	background-size: 100% 100vh;
+}
+
+.container{
+	background-color: gray;
+	width: 75%;
 }
 
 #header{
@@ -22,6 +29,7 @@ body{
 	height: auto;
 	padding-top: 5px;
 	padding-bottom: 5px;
+
 }
 
 #start-again{
@@ -36,4 +44,12 @@ body{
 .score-container {
 	margin-left: 37.2%;
 	width: 25%;	
+}
+
+#counter, #question1{
+	font-weight: bold;
+}
+
+.question-answers-counter{
+	padding-bottom: 1px;
 }

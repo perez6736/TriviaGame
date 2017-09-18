@@ -29,7 +29,7 @@ var questions ={
 			question: "Who was the shortest player ever to play in the NBA?", 
 			correctAnswer: "Tyrone Bogues",
 			wrongAnswers: [
-				"LeBron James", "Muggsy Bogues", "Charles Barkley"
+				"LeBron James", "Freddy Bogues", "Charles Barkley"
 			]
 		},
 		{
@@ -140,7 +140,7 @@ var questions ={
 
 //-------------------------------------------------
 // lets make a countdown timer
-var count = 5; // set the counter 
+var count = 30; // set the counter 
 var startCounter; // call this to start the counter
 var _theCounter;
 counterHTML.html("Time remaining: " + count); 
@@ -222,7 +222,7 @@ function makeRandomArray(arrayLength, randomArray){
 }
 
 function resetCounter(){
-	count = 5;
+	count = 30;
 	counterHTML.html("Time remaining: " + count);
 }
 
@@ -235,7 +235,7 @@ function displayCorrectAnswer(){
 	//gets the correct answer and puts it in the div by using the currentQuestion value as the index
 	correctAnswerContainerHTML.show();
 	// this looks into the questionOrder array to find which question we are at and pulls the correct answer for that question. 
-	correctAnswerHTML.html("The correct answer was: " + questions.qAndA[questionOrder[currentQuestion]].correctAnswer); 
+	correctAnswerHTML.html("The correct answer was: <b>" + questions.qAndA[questionOrder[currentQuestion]].correctAnswer +"</b>"); 
 }
 
 function displayQuestionAndAnswersCounterContainers(){
