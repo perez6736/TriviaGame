@@ -142,7 +142,7 @@ var questions ={
 
 //-------------------------------------------------
 // lets make a countdown timer
-var count = 5; // set the counter 
+var count = 25; // set the counter 
 var startCounter; // call this to start the counter
 var _theCounter;
 counterHTML.html("Time remaining: " + count); 
@@ -223,7 +223,7 @@ function makeRandomArray(arrayLength, randomArray){
 }
 
 function resetCounter(){
-	count = 5;
+	count = 25;
 	counterHTML.html("Time remaining: " + count);
 }
 
