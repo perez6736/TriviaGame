@@ -15,7 +15,7 @@ body{
 .title{
 	margin: 25px;
 }
-.title, .counter-container, .question, .answer, .start-button, .score-container, .startAgain-container{
+.title, .counter-container, .question, .answer, .start-button, .score-container, .startAgain-container, .correct-answer-container{
 	border-style: solid;
 	margin: 25px;
 	margin-left: 25%;

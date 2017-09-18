@@ -14,6 +14,8 @@ var scoreContainerHTML = $(".score-container");
 var answersClassHTML = $(".answer");
 var questionClassHTML = $(".question");
 var counterClassHTML = $(".counter-container");
+var correctAnswerContainerHTML = $(".correct-answer-container");
+var correctAnswerHTML = $("#correct-answer");
 
 var correctGuess = 0;
 var incorrectGuess = 0; 
@@ -56,9 +58,12 @@ var questions ={
 
 		// made this function in order to call and randomize the question order and where the answer show up. 
 		displayQuestionAndAnswers: function(QuestionIndex){
-			if(QuestionIndex >= questions.qAndA.length){
-				hideAnswersQuestionsCounters();
-				showScore();
+			if(questionOrder.indexOf(QuestionIndex) >= questions.qAndA.length){
+				setTimeout(function(){
+					hideAnswersQuestionsCounters();
+					showScore();
+				}, 3000);
+				
 			}
 			else{
 				var randomQuestion = this.qAndA[QuestionIndex].question; //this is the random question 
@@ -69,6 +74,8 @@ var questions ={
 
 				makeRandomArray(WrongAnswers.length+1, randomDivForAnswersArr); // need to add one to make room for the correct answer too.
 				randomDivForAnswersArr = chance.shuffle(randomDivForAnswersArr); //shuffle that array up 
+
+
 
 				for (i=0; i<WrongAnswers.length; i++){
 					theWrongAnswer = WrongAnswers[i]; // the wrong answer is an index of the scrambled wrong answer array 
@@ -104,10 +111,15 @@ function CountingDown(){
 		counterHTML.html(count); 
 		if(!isScoreShowing){ //when ever the score isnt showing is when we will give incorrect answers
 			incorrectGuess++; //if counts hits zero you get a wrong answer 
+			currentQuestion++; //go to the next question 
+			timeoutForAnswer(); 
+			setTimeout(resetCounter, 3000);
+			questions.displayQuestionAndAnswers(questionOrder[currentQuestion]); // show the next question when times up
+			resetCounter(); //reset the count and start it again. 
 		} 
-		currentQuestion++; //go to the next question 
-		questions.displayQuestionAndAnswers(currentQuestion); // show the next question 
-		resetCounter(); //reset the count and start it again. 
+		if(questionOrder[currentQuestion] < questionOrder.length){ //this checks if we went through all the questions 
+			displayCorrectAnswer();
+		}
 	}
 }
 //--------------------------------------------------------
@@ -116,12 +128,10 @@ function startGame(){
 	//detach start button
 	$(".start-button").detach();
 	//show the counter, question and answers 
-	$(".answer").show();
-	$(".question").show();
-	$(".counter-container").show();
+	displayQuestionAndAnswersCounterContainers();
 
 	// start the counter
-	if(!gameHasStarted){ //need to check if the player has started a game before
+	if(!gameHasStarted){ //need to check if the player has started a game before so counter doesnt run at end screen
 		startCounter();
 		gameHasStarted = true;
 	}
@@ -130,7 +140,8 @@ function startGame(){
 	//make the questions come up in a random order each game. 
 	makeRandomArray(questions.qAndA.length, questionOrder);
 	questionOrder = chance.shuffle(questionOrder);
-	questions.displayQuestionAndAnswers(currentQuestion); // display the first question. 
+	questionOrder.push(questionOrder.length+1);
+	questions.displayQuestionAndAnswers(questionOrder[currentQuestion]); // display the first question. 
 }
 
 //hide all divs initially 
@@ -167,12 +178,37 @@ function resetCounter(){
 	counterHTML.html(count);
 }
 
+function hideCorrectAnswer(){
+	correctAnswerContainerHTML.hide();
+}
+
+function displayCorrectAnswer(){
+	hideAnswersQuestionsCounters();
+	//gets the correct answer and puts it in the div by using the currentQuestion value as the index
+	correctAnswerContainerHTML.show();
+	// this looks into the questionOrder array to find which question we are at and pulls the correct answer for that question. 
+	correctAnswerHTML.html(questions.qAndA[questionOrder[currentQuestion]].correctAnswer); 
+}
+
+function displayQuestionAndAnswersCounterContainers(){
+	$(".answer").show();
+	$(".question").show();
+	$(".counter-container").show();
+}
+
+function timeoutForAnswer(){
+	setTimeout(function(){
+		hideCorrectAnswer();
+		displayQuestionAndAnswersCounterContainers();
+	}, 3000); 
+}
 
 
 // Game starts here ------------------------------------------------------------------------------
 
 hideAnswersQuestionsCounters();
 hideScore();
+hideCorrectAnswer();
 // clicking starts runs the startGame function
 startHTML.on("click", startGame);
 
@@ -181,6 +217,7 @@ startAgainHTML.on("click", function(){ // if the user wants to play again we mus
 	incorrectGuess = 0; 
 	questionOrder = [];
 	currentQuestion = 0;
+	isScoreShowing = false;
 	resetCounter();
 	hideScore();
 	startGame();
@@ -191,15 +228,22 @@ answersClassHTML.on("click", function(e){
 	var answerResult = $(this).children("div").attr("value"); // result of the answer he clicked 
 	if(answerResult === "correct"){ //if user clicked correct answer
 		correctGuess++; //add to score
+		displayCorrectAnswer();
 		currentQuestion++; //set the variable so it can be passed in displayQuestionAndAnswers
-		questions.displayQuestionAndAnswers(currentQuestion);
+		timeoutForAnswer();
+		setTimeout(resetCounter, 3000);
+		questions.displayQuestionAndAnswers(questionOrder[currentQuestion]);
 		resetCounter(); // reset counter 
 	
 	}
 	else{
 		incorrectGuess++; //add to score
-		currentQuestion++;
-		questions.displayQuestionAndAnswers(currentQuestion);
+		displayQuestionAndAnswersCounterContainers();
+		displayCorrectAnswer();
+		currentQuestion++; //set the variable so it can be passed in displayQuestionAndAnswers
+		timeoutForAnswer();
+		setTimeout(resetCounter, 3000); // set timeout to reset counter that matches how long the answer is displayed. 
+		questions.displayQuestionAndAnswers(questionOrder[currentQuestion]);
 		resetCounter();
 	}
 })
