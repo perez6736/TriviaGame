@@ -142,7 +142,7 @@ var questions ={
 
 //-------------------------------------------------
 // lets make a countdown timer
-var count = 30; // set the counter 
+var count = 5; // set the counter 
 var startCounter; // call this to start the counter
 var _theCounter;
 counterHTML.html("Time remaining: " + count); 
@@ -161,15 +161,14 @@ function CountingDown(){
 		counterHTML.html("Time remaining: " + count); 
 		if(!isScoreShowing){ //when ever the score isnt showing is when we will give incorrect answers
 			incorrectGuess++; //if counts hits zero you get a wrong answer 
+			displayCorrectAnswer();
 			currentQuestion++; //go to the next question 
 			timeoutForAnswer(); 
 			setTimeout(resetCounter, 3000);
 			questions.displayQuestionAndAnswers(questionOrder[currentQuestion]); // show the next question when times up
 			resetCounter(); //reset the count and start it again. 
 		} 
-		if(questionOrder[currentQuestion] < questionOrder.length){ //this checks if we went through all the questions 
-			displayCorrectAnswer();
-		}
+
 	}
 }
 //--------------------------------------------------------
@@ -224,7 +223,7 @@ function makeRandomArray(arrayLength, randomArray){
 }
 
 function resetCounter(){
-	count = 30;
+	count = 5;
 	counterHTML.html("Time remaining: " + count);
 }
 
