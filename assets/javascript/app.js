@@ -26,31 +26,79 @@ var currentQuestion = 0;
 var questions ={
 	qAndA:[
 		{
-			question: "What day is it?", 
-			correctAnswer: "monday",
+			question: "Who was the shortest player ever to play in the NBA?", 
+			correctAnswer: "Tyrone Bogues",
 			wrongAnswers: [
-				"tuesday", "sunday", "friday"
+				"LeBron James", "Muggsy Bogues", "Charles Barkley"
 			]
 		},
 		{
-			question: "What is your favorite color?",
-			correctAnswer: "blue",
+			question: "What male tennis player has won the most Grand Slam titles?",
+			correctAnswer: "Roger Federer",
 			wrongAnswers: [
-				"green", "red", "pink"
+				"Rafael Nadel", "Novak Djokovic", "Andy Murray"
 			]
 		},
 		{
-			question: "what color is the sky?",
-			correctAnswer: "skyblue",
+			question: "Who was the last professional hockey player to play without a helmet?",
+			correctAnswer: "Craig MacTavish",
 			wrongAnswers: [
-				"skygreen", "skyred", "skypink"
+				"Jaromir Jagr", "Ilya Kovalchuk", "Wayne Gretzky"
 			]
 		},
 		{
-			question: "how many legs do you have?",
-			correctAnswer: "2",
+			question: "How many holes are there in a full round of golf?",
+			correctAnswer: "18",
 			wrongAnswers: [
-				"3", "1", "5"
+				"21", "9", "16"
+			]
+
+		},
+		{
+			question: "What is professional wrestler, John Cena, catch phrase?",
+			correctAnswer: "You can't see me!",
+			wrongAnswers: [
+				"What now?!", "Give you the People's elbow", "Choke Slam"
+			]
+
+		},
+		{
+			question: "What city hosted the 2012 Summer Olympics?",
+			correctAnswer: "London, England",
+			wrongAnswers: [
+				"Rio De Janeiro, Brazil", "Tokyo, Japan", "Beijing, China"
+			]
+
+		},
+		{
+			question: "Who is the only athlete ever to play in a Super Bowl and a World Series?",
+			correctAnswer: "Deion Sanders",
+			wrongAnswers: [
+				"Tom Brady", "Michael Jordon", "Tim Tebow"
+			]
+
+		},
+		{
+			question: "What NFL Quarterback has been in the most Super Bowls?",
+			correctAnswer: "Tom Brady",
+			wrongAnswers: [
+				"Peyton Manning", "John Elway ", "Brett Favre"
+			]
+
+		},
+		{
+			question: "Brazil was eliminated in the 2014 world cup by what team?",
+			correctAnswer: "Germany",
+			wrongAnswers: [
+				"England", "Netherlands", "France"
+			]
+
+		},
+		{
+			question: "The Heisman Trophy is presented in which sport?",
+			correctAnswer: "Football",
+			wrongAnswers: [
+				"Baseball", "Soccer", "Basketball"
 			]
 
 		}
@@ -95,7 +143,7 @@ var questions ={
 var count = 5; // set the counter 
 var startCounter; // call this to start the counter
 var _theCounter;
-counterHTML.html(count); 
+counterHTML.html("Time remaining: " + count); 
 var gameHasStarted = false;
 var isScoreShowing = false;
 
@@ -105,10 +153,10 @@ startCounter = function(){_theCounter = setInterval(CountingDown, 1000)};
 //removes a value of 1 from the counter and updates the html
 function CountingDown(){
 	count--;
-	counterHTML.html(count);
+	counterHTML.html("Time remaining: " + count);
 	if(count <= 0){
 		count = 0;
-		counterHTML.html(count); 
+		counterHTML.html("Time remaining: " + count); 
 		if(!isScoreShowing){ //when ever the score isnt showing is when we will give incorrect answers
 			incorrectGuess++; //if counts hits zero you get a wrong answer 
 			currentQuestion++; //go to the next question 
@@ -175,7 +223,7 @@ function makeRandomArray(arrayLength, randomArray){
 
 function resetCounter(){
 	count = 5;
-	counterHTML.html(count);
+	counterHTML.html("Time remaining: " + count);
 }
 
 function hideCorrectAnswer(){
@@ -187,7 +235,7 @@ function displayCorrectAnswer(){
 	//gets the correct answer and puts it in the div by using the currentQuestion value as the index
 	correctAnswerContainerHTML.show();
 	// this looks into the questionOrder array to find which question we are at and pulls the correct answer for that question. 
-	correctAnswerHTML.html(questions.qAndA[questionOrder[currentQuestion]].correctAnswer); 
+	correctAnswerHTML.html("The correct answer was: " + questions.qAndA[questionOrder[currentQuestion]].correctAnswer); 
 }
 
 function displayQuestionAndAnswersCounterContainers(){

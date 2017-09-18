@@ -4,7 +4,7 @@
 }
 
 body{
-
+	
 }
 
 #header{
@@ -16,7 +16,6 @@ body{
 	margin: 25px;
 }
 .title, .counter-container, .question, .answer, .start-button, .score-container, .startAgain-container, .correct-answer-container{
-	border-style: solid;
 	margin: 25px;
 	margin-left: 25%;
 	margin-right: 25%;
@@ -31,6 +30,7 @@ body{
 
 .answer:hover, .start-button:hover, .startAgain-container:hover{
 	background-color: yellow;
+	border-style: solid;
 }
 
 .score-container {
