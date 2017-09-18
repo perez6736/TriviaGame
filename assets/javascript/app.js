@@ -22,6 +22,8 @@ var incorrectGuess = 0;
 var questionOrder = [];
 var currentQuestion = 0;
 
+var chance = new Chance();
+
 //questions object 
 var questions ={
 	qAndA:[
